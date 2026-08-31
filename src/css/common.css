@@ -33,3 +33,33 @@ a {
 .btn.btn-primary:active {
   background-color: #337ab7 !important;
 }
+
+.parameter-filters {
+  margin-bottom: 12px;
+  max-height: 45vh;
+  overflow-y: auto;
+}
+
+.parameter-filters-header,
+.parameter-filter-name {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.parameter-filter {
+  border-top: 1px solid #eee;
+  margin-top: 6px;
+  padding-top: 6px;
+}
+
+.parameter-filter-name span {
+  color: #777;
+  font-size: 0.85em;
+}
+
+.parameter-filter-values label {
+  display: block;
+  font-weight: normal;
+  margin: 3px 0;
+}

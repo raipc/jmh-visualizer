@@ -11,6 +11,7 @@ import EyeIcon from 'react-icons/lib/fa/eye'
 import { actions } from 'store/store.js'
 import TocList from 'components/TocList.jsx'
 import Tooltipped from 'components/lib/Tooltipped.jsx'
+import ParameterFilters from 'components/ParameterFilters.jsx'
 
 // Side bar for SingleRunView, TwoRunViews, etc...
 export default class RunSideBar extends React.Component {
@@ -23,10 +24,22 @@ export default class RunSideBar extends React.Component {
     focusedBenchmarkBundles: PropTypes.object.isRequired,
     categories: PropTypes.array.isRequired,
     activeCategory: PropTypes.string.isRequired,
+    parameterFilterBundles: PropTypes.array.isRequired,
+    parameterFilters: PropTypes.object.isRequired,
   };
 
   render() {
-    const { benchmarkBundles, metrics, metricExtractor, buttons, focusedBenchmarkBundles, categories, activeCategory } = this.props;
+    const {
+      benchmarkBundles,
+      metrics,
+      metricExtractor,
+      buttons,
+      focusedBenchmarkBundles,
+      categories,
+      activeCategory,
+      parameterFilterBundles,
+      parameterFilters
+    } = this.props;
 
     const metricsOptions = metrics.filter(aMetric => aMetric.startsWith('·') || aMetric === 'Score').map(metric => <option key={ metric } value={ metric }>
       { metric }
@@ -61,6 +74,7 @@ export default class RunSideBar extends React.Component {
             </Tooltipped>
           </InputGroup>
         </FormGroup>
+        <ParameterFilters benchmarkBundles={ parameterFilterBundles } parameterFilters={ parameterFilters } />
         { buttons }
         <hr style={ { marginTop: '10px', marginBottom: '10px' } } />
         <TocList
