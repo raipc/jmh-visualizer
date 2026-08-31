@@ -12,12 +12,14 @@ import MultiRunView from 'components/multi/MultiRunView.jsx';
 
 import PrimaryMetricExtractor from 'models/extractor/PrimaryMetricExtractor.js'
 import SecondaryMetricExtractor from 'models/extractor/SecondaryMetricExtractor.js'
+import { filterBenchmarkBundles } from 'functions/parameterFilters.js'
 
 
 /* eslint react/prop-types: 0 */
-const RunScreen = ({ benchmarkSelection, selectedMetric, focusedBundles, chartConfig }) => {
+const RunScreen = ({ benchmarkSelection, selectedMetric, focusedBundles, chartConfig, parameterFilters }) => {
 
-    const benchmarkBundles = benchmarkSelection.benchmarkBundles;
+    const parameterFilterBundles = benchmarkSelection.benchmarkBundles;
+    const benchmarkBundles = filterBenchmarkBundles(parameterFilterBundles, parameterFilters);
     const metricType = selectedMetric;
     const metricExtractor = createMetricExtractor(selectedMetric);
     const categories = ['Benchmarks'];
@@ -79,16 +81,19 @@ const RunScreen = ({ benchmarkSelection, selectedMetric, focusedBundles, chartCo
             focusedBenchmarkBundles={ focusedBundles }
             categories={ categories }
             activeCategory={ activeCategory }
+            parameterFilterBundles={ parameterFilterBundles }
+            parameterFilters={ parameterFilters }
         /> }
         />
     );
 }
 
-export default connect(({ benchmarkRuns, runSelection, selectedMetric, focusedBundles, chartConfig }) => ({
+export default connect(({ benchmarkRuns, runSelection, selectedMetric, focusedBundles, chartConfig, parameterFilters }) => ({
     benchmarkSelection: new BenchmarkSelection(benchmarkRuns, runSelection),
     selectedMetric,
     focusedBundles,
-    chartConfig
+    chartConfig,
+    parameterFilters
 }))(RunScreen)
 
 function createMetricExtractor(metricType) {

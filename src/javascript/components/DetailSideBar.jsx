@@ -9,6 +9,7 @@ import BackIcon from 'react-icons/lib/md/keyboard-backspace'
 
 import { actions } from 'store/store.js'
 import TocList from 'components/TocList.jsx'
+import ParameterFilters from 'components/ParameterFilters.jsx'
 
 export default class DetailSideBar extends React.Component {
 
@@ -17,10 +18,19 @@ export default class DetailSideBar extends React.Component {
     benchmarkBundles: PropTypes.array.isRequired,
     secondaryMetrics: PropTypes.array.isRequired,
     buttons: PropTypes.array,
+    parameterFilterBundles: PropTypes.array.isRequired,
+    parameterFilters: PropTypes.object.isRequired,
   };
 
   render() {
-    const { benchmarkBundle, benchmarkBundles, secondaryMetrics, buttons } = this.props;
+    const {
+      benchmarkBundle,
+      benchmarkBundles,
+      secondaryMetrics,
+      buttons,
+      parameterFilterBundles,
+      parameterFilters
+    } = this.props;
     const benchmarkBundleOptions = benchmarkBundles.map(bundle => <option key={ bundle.key } value={ bundle.key }>
       { bundle.name }
     </option>);
@@ -39,6 +49,7 @@ export default class DetailSideBar extends React.Component {
           </FormControl>
         </InputGroup>
       </FormGroup>
+      <ParameterFilters benchmarkBundles={ parameterFilterBundles } parameterFilters={ parameterFilters } />
       { buttons }
       <hr style={ { marginTop: '10px', marginBottom: '10px' } } />
       <TocList

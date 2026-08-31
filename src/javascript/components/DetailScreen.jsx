@@ -14,11 +14,13 @@ import DiffBarChartView from 'components/two/DiffBarChartView.jsx'
 import LineChartView from 'components/multi/LineChartView.jsx'
 
 import { parseClassNameFromFullName } from 'functions/parse.js';
+import { filterBenchmarkBundles } from 'functions/parameterFilters.js'
 
 /* eslint react/prop-types: 0 */
-const DetailScreen = ({ detailedBenchmarkBundle, benchmarkSelection, chartConfig }) => {
+const DetailScreen = ({ detailedBenchmarkBundle, benchmarkSelection, chartConfig, parameterFilters }) => {
 
-    const benchmarkBundles = benchmarkSelection.benchmarkBundles;
+    const parameterFilterBundles = benchmarkSelection.benchmarkBundles;
+    const benchmarkBundles = filterBenchmarkBundles(parameterFilterBundles, parameterFilters);
     const runNames = benchmarkSelection.runNames;
 
     const detailBundle = benchmarkBundles.find(bundle => bundle.key === detailedBenchmarkBundle) || new BenchmarkBundle({
@@ -75,14 +77,17 @@ const DetailScreen = ({ detailedBenchmarkBundle, benchmarkSelection, chartConfig
             benchmarkBundles={ benchmarkBundles }
             secondaryMetrics={ secondaryMetrics }
             buttons={ buttons }
+            parameterFilterBundles={ parameterFilterBundles }
+            parameterFilters={ parameterFilters }
         /> } />
     );
 }
 
-export default connect(({ detailedBenchmarkBundle, benchmarkRuns, runSelection, chartConfig }) => ({
+export default connect(({ detailedBenchmarkBundle, benchmarkRuns, runSelection, chartConfig, parameterFilters }) => ({
     detailedBenchmarkBundle,
     benchmarkSelection: new BenchmarkSelection(benchmarkRuns, runSelection),
-    chartConfig
+    chartConfig,
+    parameterFilters
 }))(DetailScreen)
 
 

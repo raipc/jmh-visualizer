@@ -56,6 +56,7 @@ const config = {
         detailedBenchmarkBundle: null,
         activeCategory: 'Benchmarks',
         focusedBundles: new Set(),
+        parameterFilters: {},
         chartConfig: {
             sort: false,
             logScale: false
@@ -70,6 +71,10 @@ const config = {
         loadTwoRunsExample: (state, actions, param, trigger) => loadBenchmarksAsync(state, trigger, () => actions.loadTwoRunsExample(null, true), () => getExamples(examples.twoRunsExample)),
         loadMultiRunExample: (state, actions, param, trigger) => loadBenchmarksAsync(state, trigger, () => actions.loadMultiRunExample(null, true), () => getExamples(examples.multiRunExample)),
         selectMetric: (state, actions, newSelectedMetric) => ({ selectedMetric: newSelectedMetric }),
+        setParameterFilter: (state, actions, name, selectedValues) => ({
+            parameterFilters: { ...state.parameterFilters, [name]: selectedValues }
+        }),
+        resetParameterFilters: () => ({ parameterFilters: {} }),
         focusBundle: (state, actions, benchmarkBundleName) => {
             const clonedFocusedBundles = new Set(state.focusedBundles)
             const alreadyFocused = clonedFocusedBundles.has(benchmarkBundleName);
@@ -110,7 +115,14 @@ const config = {
 function stateForBenchmarks(benchmarkRuns) {
     const runView = benchmarkRuns.length > 1 ? 'Summary' : null;
     const runSelection = Array(benchmarkRuns.length).fill(true)
-    return { initialLoading: false, loading: false, benchmarkRuns: benchmarkRuns, runSelection: runSelection, runView: runView };
+    return {
+        initialLoading: false,
+        loading: false,
+        benchmarkRuns: benchmarkRuns,
+        runSelection: runSelection,
+        runView: runView,
+        parameterFilters: {}
+    };
 }
 
 async function loadBenchmarksAsync(state, trigger, triggerFunction, getBenchmarksFunction) {

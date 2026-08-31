@@ -9,12 +9,14 @@ import SummaryView from 'components/summary/SummaryView.jsx';
 
 import PrimaryMetricExtractor from 'models/extractor/PrimaryMetricExtractor.js'
 import SecondaryMetricExtractor from 'models/extractor/SecondaryMetricExtractor.js'
+import { filterBenchmarkBundles } from 'functions/parameterFilters.js'
 
 
 /* eslint react/prop-types: 0 */
-const SummaryScreen = ({ benchmarkSelection, selectedMetric }) => {
+const SummaryScreen = ({ benchmarkSelection, selectedMetric, parameterFilters }) => {
 
-    const benchmarkBundles = benchmarkSelection.benchmarkBundles;
+    const parameterFilterBundles = benchmarkSelection.benchmarkBundles;
+    const benchmarkBundles = filterBenchmarkBundles(parameterFilterBundles, parameterFilters);
     const metricType = selectedMetric;
     const metricExtractor = createMetricExtractor(selectedMetric);
     const categories = ['Benchmarks'];
@@ -49,15 +51,18 @@ const SummaryScreen = ({ benchmarkSelection, selectedMetric }) => {
                     focusedBenchmarkBundles={ new Set() }
                     categories={ categories }
                     activeCategory={ activeCategory }
+                    parameterFilterBundles={ parameterFilterBundles }
+                    parameterFilters={ parameterFilters }
                 />
             }
         />
     );
 }
 
-export default connect(({ benchmarkRuns, runSelection, selectedMetric }) => ({
+export default connect(({ benchmarkRuns, runSelection, selectedMetric, parameterFilters }) => ({
     benchmarkSelection: new BenchmarkSelection(benchmarkRuns, runSelection),
     selectedMetric,
+    parameterFilters,
 }))(SummaryScreen)
 
 function createMetricExtractor(metricType) {
